@@ -7,16 +7,43 @@ const auth = getAuth(app);
 function App() {
   const handleRegister = (e) => {
     e.preventDefault();
-    console.log(e.target.email.value);
-    console.log(e.target.password.value);
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log(email, password);
+  };
+
+  const handleEmailChange = (e) => {
+    console.log(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    console.log(e.target.value);
+  };
+
+  const handleNameBlur = (e) => {
+    console.log(e.target.value);
   };
 
   return (
     <div className="App">
       <form onSubmit={handleRegister}>
-        <input type="email" name="email" id="" placeholder=" Your email" />
+        <input
+          onBlur={handleNameBlur}
+          type="text"
+          name="name"
+          placeholder="Your name"
+        />
         <br />
         <input
+          onChange={handleEmailChange}
+          type="email"
+          name="email"
+          id=""
+          placeholder=" Your email"
+        />
+        <br />
+        <input
+          onChange={handlePasswordChange}
           type="password"
           name="password"
           id=""
