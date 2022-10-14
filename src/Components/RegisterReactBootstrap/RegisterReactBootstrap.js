@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   sendEmailVerification,
+  updateProfile,
 } from 'firebase/auth';
 import { Button, Form } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,10 +22,12 @@ const RegisterReactBootstrap = () => {
     e.preventDefault();
 
     const form = e.target;
+    const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password);
+    console.log(name, email, password);
 
+    //* Validate Password
     if (!/(?=.*[A-Z].*[A-Z])/.test(password)) {
       setPasswordError('Please provide at least two uppercase');
       return;
@@ -54,6 +57,7 @@ const RegisterReactBootstrap = () => {
           });
 
         verifyEmail();
+        updateUserName(name);
       })
       .catch((error) => {
         console.error('error:', error);
@@ -69,6 +73,19 @@ const RegisterReactBootstrap = () => {
     });
   };
 
+  const updateUserName = (name) => {
+    //* Add User Name to firebase
+    updateProfile(auth.currentUser, {
+      displayName: name,
+    })
+      .then(() => {
+        console.log('Added user name');
+      })
+      .catch((error) => {
+        console.error('error:', error);
+      });
+  };
+
   return (
     <div className="form-container">
       <h3 className="text-white">
@@ -78,7 +95,12 @@ const RegisterReactBootstrap = () => {
       <Form onSubmit={handleRegister} className="w-50 mx-auto form">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="label">Name</Form.Label>
-          <Form.Control type="text" placeholder="Enter name" required />
+          <Form.Control
+            type="text"
+            name="name"
+            placeholder="Enter name"
+            required
+          />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicEmail">
