@@ -1,0 +1,40 @@
+.sign-in-container {
+  background-color: #112b3c;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 60px);
+}
+
+.sign-in-container h3 {
+  color: #fff;
+  text-align: center;
+  padding-top: 2rem;
+}
+
+.sign-in {
+  color: #00ffd1;
+}
+
+.form {
+  background-color: #002a5bc9;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.label {
+  color: #fff;
+}
+
+.btn-sign-in {
+  background-color: #00ffd0b7;
+  border: none;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-sign-in:hover {
+  background-color: #00ffd0e7;
+}

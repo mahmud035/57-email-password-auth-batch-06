@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { Button, Form } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
 const auth = getAuth(app);
 
@@ -57,7 +58,9 @@ const RegisterReactBootstrap = () => {
 
   return (
     <div className="form-container">
-      <h3 className="text-white">Please Register</h3>
+      <h3 className="text-white">
+        Please <span className="text-info">Register</span>
+      </h3>
 
       <Form onSubmit={handleRegister} className="w-50 mx-auto form">
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -91,6 +94,11 @@ const RegisterReactBootstrap = () => {
         </Button>
         <ToastContainer />
       </Form>
+      <p className="text-info mt-3">
+        <small>
+          Already have an account? <Link to="/sign-in"> Sign in</Link>
+        </small>
+      </p>
     </div>
   );
 };

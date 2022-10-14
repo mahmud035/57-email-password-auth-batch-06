@@ -1,16 +1,35 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
-import app from './Firebase/firebase.init';
-import { getAuth } from 'firebase/auth';
-import Register from './Components/Register/Register';
+import Main from './Components/Layout/Main';
 import RegisterReactBootstrap from './Components/RegisterReactBootstrap/RegisterReactBootstrap';
-
-const auth = getAuth(app);
+import SignIn from './Components/SignIn/SignIn';
 
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Main></Main>,
+      children: [
+        {
+          path: '/',
+          element: <RegisterReactBootstrap></RegisterReactBootstrap>,
+        },
+        {
+          path: '/register',
+          element: <RegisterReactBootstrap></RegisterReactBootstrap>,
+        },
+        {
+          path: '/sign-in',
+          element: <SignIn></SignIn>,
+        },
+      ],
+    },
+  ]);
   return (
     <div>
       {/* <Register></Register> */}
-      <RegisterReactBootstrap></RegisterReactBootstrap>
+
+      <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }
