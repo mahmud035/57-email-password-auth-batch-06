@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  getAuth,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import './SignIn.css';
 import app from '../../Firebase/firebase.init';
 import { ToastContainer, toast } from 'react-toastify';
@@ -11,6 +15,7 @@ const auth = getAuth(app);
 
 const SignIn = () => {
   const [successStatus, setSuccessStatus] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -37,6 +42,26 @@ const SignIn = () => {
     form.reset();
   };
 
+  const handleEmailBlur = (e) => {
+    const email = e.target.value;
+    setUserEmail(email);
+    // console.log(email);
+  };
+
+  const handleForgetPassword = () => {
+    if (!userEmail) {
+      alert('Please enter your email address');
+      return;
+    }
+    sendPasswordResetEmail(auth, userEmail)
+      .then(() => {
+        alert('Check your email to Reset your password');
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  };
+
   return (
     <div className="sign-in-container">
       <h3>
@@ -47,6 +72,7 @@ const SignIn = () => {
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="label">Email address</Form.Label>
           <Form.Control
+            onBlur={handleEmailBlur}
             type="email"
             name="email"
             placeholder="Enter email"
@@ -73,6 +99,11 @@ const SignIn = () => {
         <small>
           New to this Website? Please <Link to="/register">Register</Link>
         </small>
+      </p>
+      <p className="text-info ">
+        <button onClick={handleForgetPassword} className="btn btn-link">
+          Forget Password?
+        </button>
       </p>
       <ToastContainer />
     </div>

@@ -111,6 +111,7 @@ const RegisterReactBootstrap = () => {
           Already have an account? <Link to="/sign-in"> Sign in</Link>
         </small>
       </p>
+
       <ToastContainer />
     </div>
   );
