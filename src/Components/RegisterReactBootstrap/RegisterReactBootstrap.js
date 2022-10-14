@@ -3,16 +3,20 @@ import './RegisterReactBootstrap.css';
 import app from '../../Firebase/firebase.init';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { Button, Form } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const auth = getAuth(app);
 
 const RegisterReactBootstrap = () => {
   const [passwordError, setPasswordError] = useState('');
+  const [userSuccess, setUserSuccess] = useState(false);
 
   const handleRegister = (e) => {
     e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
     console.log(email, password);
 
     if (!/(?=.*[A-Z].*[A-Z])/.test(password)) {
@@ -35,9 +39,19 @@ const RegisterReactBootstrap = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
+        setUserSuccess(true);
+
+        userSuccess &&
+          toast.success('User created successfully', {
+            position: 'top-center',
+            autoClose: 1000,
+          });
+
+        form.reset();
       })
       .catch((error) => {
         console.error('error:', error);
+        setPasswordError(error.message.slice(22, -2));
       });
   };
 
@@ -70,6 +84,7 @@ const RegisterReactBootstrap = () => {
         <Button variant="primary" type="submit">
           Register
         </Button>
+        <ToastContainer />
       </Form>
     </div>
   );
