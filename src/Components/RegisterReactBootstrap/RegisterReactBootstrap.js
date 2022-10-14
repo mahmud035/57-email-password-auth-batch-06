@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import './RegisterReactBootstrap.css';
 import app from '../../Firebase/firebase.init';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  sendEmailVerification,
+} from 'firebase/auth';
 import { Button, Form } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,6 +19,7 @@ const RegisterReactBootstrap = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
+
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
@@ -43,17 +48,25 @@ const RegisterReactBootstrap = () => {
         setUserSuccess(true);
 
         userSuccess &&
-          toast.success('User created successfully', {
+          toast.success('User created successfully!', {
             position: 'top-center',
-            autoClose: 1000,
+            autoClose: 50,
           });
 
-        form.reset();
+        verifyEmail();
       })
       .catch((error) => {
         console.error('error:', error);
         setPasswordError(error.message.slice(22, -2));
       });
+
+    form.reset();
+  };
+
+  const verifyEmail = () => {
+    sendEmailVerification(auth.currentUser).then(() => {
+      alert('Please check your email and verify your email address');
+    });
   };
 
   return (
@@ -92,13 +105,13 @@ const RegisterReactBootstrap = () => {
         <Button variant="primary" type="submit">
           Register
         </Button>
-        <ToastContainer />
       </Form>
       <p className="text-info mt-3">
         <small>
           Already have an account? <Link to="/sign-in"> Sign in</Link>
         </small>
       </p>
+      <ToastContainer />
     </div>
   );
 };

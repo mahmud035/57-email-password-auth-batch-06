@@ -1,14 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import './SignIn.css';
+import app from '../../Firebase/firebase.init';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const auth = getAuth(app);
 
 const SignIn = () => {
+  const [successStatus, setSuccessStatus] = useState(false);
+
   const handleSignIn = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        setSuccessStatus(true);
+
+        successStatus &&
+          toast.success('Sign In successfully', {
+            position: 'top-center',
+            autoClose: 500,
+          });
+      })
+      .catch((error) => {
+        console.error('error', error);
+      });
+
+    form.reset();
   };
 
   return (
@@ -48,6 +74,7 @@ const SignIn = () => {
           New to this Website? Please <Link to="/register">Register</Link>
         </small>
       </p>
+      <ToastContainer />
     </div>
   );
 };
