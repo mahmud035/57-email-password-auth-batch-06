@@ -7,20 +7,29 @@ import { Button, Form } from 'react-bootstrap';
 const auth = getAuth(app);
 
 const RegisterReactBootstrap = () => {
-  const [validated, setValidated] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
 
   const handleRegister = (e) => {
-    const form = e.currentTarget;
+    e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
     console.log(email, password);
 
-    if (form.checkValidity() === false) {
-      e.preventDefault();
-      e.stopPropagation();
+    if (!/(?=.*[A-Z].*[A-Z])/.test(password)) {
+      setPasswordError('Please provide at least two uppercase');
+      return;
+    }
+    if (!/.{6}/.test(password)) {
+      setPasswordError('Password should be at least six characters');
+      return;
     }
 
-    setValidated(true);
+    if (!/(?=.*[!@#$&*])/.test(password)) {
+      setPasswordError('Please provide at least one special character');
+      return;
+    }
+
+    setPasswordError();
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
@@ -36,12 +45,7 @@ const RegisterReactBootstrap = () => {
     <div className="form-container">
       <h3 className="text-white">Please Register</h3>
 
-      <Form
-        onSubmit={handleRegister}
-        noValidate
-        validated={validated}
-        className="w-50 mx-auto form"
-      >
+      <Form onSubmit={handleRegister} className="w-50 mx-auto form">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="label">Email address</Form.Label>
           <Form.Control
@@ -50,9 +54,6 @@ const RegisterReactBootstrap = () => {
             placeholder="Enter email"
             required
           />
-          <Form.Control.Feedback type="invalid">
-            Please provide valid email.
-          </Form.Control.Feedback>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -63,10 +64,8 @@ const RegisterReactBootstrap = () => {
             placeholder="Password"
             required
           />
-          <Form.Control.Feedback type="invalid">
-            Please provide valid password.
-          </Form.Control.Feedback>
         </Form.Group>
+        <p className="text-danger">{passwordError}</p>
 
         <Button variant="primary" type="submit">
           Register
