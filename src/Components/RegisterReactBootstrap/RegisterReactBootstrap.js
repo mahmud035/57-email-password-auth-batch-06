@@ -61,6 +61,11 @@ const RegisterReactBootstrap = () => {
 
       <Form onSubmit={handleRegister} className="w-50 mx-auto form">
         <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label className="label">Name</Form.Label>
+          <Form.Control type="text" placeholder="Enter name" required />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label className="label">Email address</Form.Label>
           <Form.Control
             type="email"
